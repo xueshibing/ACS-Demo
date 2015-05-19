@@ -16,11 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-1 var nfc = {
-  addTagIdListener: function (success, failure) {
-                      cordova.exec(success, failure, "CoffeeNFC", "coolMethod", "test");
-                    }
-  }
 var app = {
     // Application Constructor
     initialize: function() {
@@ -45,10 +40,20 @@ var app = {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
+        var pluginElement = parentElement.querySelector('.plugin');
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
+        window.CoffeeNFC.coolMethod("abc", function(e){
+          alert(1);
+          console.log('plugin call successfully');
+          pluginElement.innerText = 'successfully';
+        }, function(e){
+          alert(2);
+          console.log('plugin call error');
+          pluginElement.innerText = 'error';
+        });
         console.log('Received Event: ' + id);
     }
 };

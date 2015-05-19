@@ -7,20 +7,11 @@
         "files": {
             "res/xml/config.xml": {
                 "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"CoffeeNFC\"><param name=\"android-package\" value=\"com.shinetechchina.coffee.nfc.CoffeeNFC\" /></feature>",
-                            "count": 1
-                        }
-                    ]
+                    "/*": []
                 }
             }
         }
     },
-    "installed_plugins": {
-        "com.shinetechchina.coffee.nfc": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
-        }
-    },
+    "installed_plugins": {},
     "dependent_plugins": {}
 }

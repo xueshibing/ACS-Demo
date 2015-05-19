@@ -35,24 +35,13 @@
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
-                <p class="event plugin"></p>
+                <p class="event plugin">adsf</p>
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="CoffeeNFC.js"></script>  
         <script type="text/javascript">
             app.initialize();
-        var parentElement = document.getElementById(id);
-        var pluginElement = parentElement.querySelector('.plugin');
-            CoffeeNFC.coolMethod("abc", function(e){
-              console.log('plugin call successfully');
-              plugin.innerText = 'successfully';
-            }, function(e){
-              console.log('plugin call error');
-              plugin.innerText = 'error';
-            });
-
         </script>
     </body>
 </html>
