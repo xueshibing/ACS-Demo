@@ -16,6 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+1 var nfc = {
+  addTagIdListener: function (success, failure) {
+                      cordova.exec(success, failure, "CoffeeNFC", "coolMethod", "test");
+                    }
+  }
 var app = {
     // Application Constructor
     initialize: function() {
