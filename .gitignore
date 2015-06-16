@@ -11,6 +11,7 @@ p.sh
 /pkg
 /src/github.com
 /platforms/android/.gradle
+/platforms/android/CordovaLib/build
 
 # Mac
 .DS_Store

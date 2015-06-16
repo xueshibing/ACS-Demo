@@ -45,7 +45,7 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        var BLOCK = 7;
+        var BLOCK = 4;
 
         var read_success =  function(result){
               alert("data: " + JSON.stringify(result))
