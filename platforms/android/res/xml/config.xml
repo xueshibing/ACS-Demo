@@ -4,8 +4,8 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
-    <feature name="CoffeeNFC">
-        <param name="android-package" value="com.shinetechchina.coffee.nfc.CoffeeNFC" />
+    <feature name="ACRNFCReaderPhoneGapPlugin">
+        <param name="android-package" value="com.frankgreen.ACRNFCReaderPhoneGapPlugin" />
     </feature>
     <allow-intent href="market:*" />
     <name>Hello World</name>

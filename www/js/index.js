@@ -45,15 +45,93 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        window.CoffeeNFC.coolMethod("abc", function(e){
-          alert(1);
-          console.log('plugin call successfully');
-          pluginElement.innerText = 'successfully';
-        }, function(e){
-          alert(2);
-          console.log('plugin call error');
-          pluginElement.innerText = 'error';
+        var BLOCK = 4;
+
+        var read_success =  function(result){
+              alert("data: " + JSON.stringify(result))
+        }
+
+        var read_failure =  function(result){
+              alert("error data: " + JSON.stringify(result))
+        }
+        var write_success =  function(result){
+              alert("write data: " + JSON.stringify(result))
+        }
+
+        var write_failure =  function(result){
+              alert("write error data: " + JSON.stringify(result))
+        }
+
+        var readButton = document.getElementById("read_data");
+        readButton.addEventListener('click', function() { 
+          if(keyA.value.length > 0){
+            ACR.authenticateWithKeyA(4,keyA.value, function(){
+                ACR.readData(BLOCK,read_success,read_failure);
+              }, function(){
+                alert('authenticate fail');
+                return;
+              }
+              )
+          }else{
+            ACR.readData(BLOCK,read_success,read_failure);
+          }
         });
+        var writeButton = document.getElementById("write_data");
+        var writeInput = document.getElementById("write_data_input");
+        var keyA = document.getElementById("key_a");
+        var keyB = document.getElementById("key_b");
+        writeButton.addEventListener('click', function() { 
+          if(keyA.value.length > 0 || keyB.value.length > 0){
+            if(keyA.value.length == 0){
+                alert('please input KeyA');
+                return;
+            }
+            if(keyB.value.length == 0){
+                alert('please input KeyB');
+                return;
+            }
+            //ACR.authenticateWithKeyB(keyB.value, function(){},function(){});
+            ACR.writeAuthenticate(BLOCK,keyA.value,keyB.value, function(){
+              ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
+            }, function(){
+                alert('write authenticate fail');
+            });
+          }else{
+            ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
+          }
+        });
+        var disableButtons = function(){
+          readButton.disabled = true;
+          writeButton.disabled = true;
+        }
+        var enableButtons = function(){
+          readButton.disabled = false;
+          writeButton.disabled = false;
+        }
+        var success = function(result) {
+            alert("UID: " + JSON.stringify(result));
+            enableButtons();
+        };
+
+        var failure = function(reason) {
+            alert("Error " + JSON.stringify(reason))
+        };
+
+        ACR.onCardAbsent = function() {
+            disableButtons();
+        }
+        console.log("Calling plugin");
+        ACR.addTagIdListener(success, failure);
+        ACR.onReady = function (reader) {
+          pluginElement.innerHTML = "ready " + reader;
+        }
+        ACR.onAttach = function (device) {
+          pluginElement.innerHTML = "attched " + reader;
+        }
+        ACR.onDetach = function (device) {
+          pluginElement.innerHTML = "detached " + reader;
+        }
+        console.log("Called plugin");
         console.log('Received Event: ' + id);
     }
 };

@@ -35,7 +35,21 @@
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
-                <p class="event plugin">adsf</p>
+                <p class="event plugin">Connecting to Reader</p>
+            </div>
+            <div>
+              <div>
+                Key A <input id="key_a" value=""/>
+                <br />
+                Key B <input id="key_b" value=""/>
+              </div>
+              <div>
+                <button disable="disable" id="read_data">Read</button>
+              </div>
+              <div>
+                <button id="write_data" disable="disable">Write</button>
+                <input id="write_data_input" />
+              </div>
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>

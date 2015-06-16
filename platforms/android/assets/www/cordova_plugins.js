@@ -8,10 +8,10 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/com.shinetechchina.coffee.nfc/www/CoffeeNFC.js",
-        "id": "com.shinetechchina.coffee.nfc.CoffeeNFC",
+        "file": "plugins/com.frankgreen/www/ACR-NFC-Reader-PhoneGap-Plugin.js",
+        "id": "com.frankgreen.ACR-NFC-Reader-PhoneGap-Plugin",
         "clobbers": [
-            "cordova.plugins.CoffeeNFC"
+            "cordova.plugins.ACR-NFC-Reader-PhoneGap-Plugin"
         ]
     }
 ];
@@ -19,7 +19,7 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-device": "1.0.1-dev",
-    "com.shinetechchina.coffee.nfc": "0.0.1"
+    "com.frankgreen": "0.0.1"
 }
 // BOTTOM OF METADATA
 });

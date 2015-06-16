@@ -1,0 +1,45 @@
+!.gitkeep
+tmp/*
+**.orig
+.DS_Store
+*.log
+*.swp
+*.log.*
+cp.sh
+p.sh
+/bin
+/pkg
+/src/github.com
+/platforms/android/.gradle
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# NetBeans
+nbproject
+
+# Eclipse
+.project
+
+# Rubinius
+*.rbc
+
+# Vim
+*.swp
+*.swo
+
+# RubyMine
+.idea
+
+# Backup
+*~
+
+#rvm
+.rvmrc
+.rvmrc.*
+
+#rubymine
+.idea/

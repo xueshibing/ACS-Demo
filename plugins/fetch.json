@@ -8,10 +8,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.shinetechchina.coffee.nfc": {
+    "com.frankgreen": {
         "source": {
             "type": "local",
-            "path": "../plugins/CoffeeNFC"
+            "path": "../ACR-NFC-Reader-PhoneGap-Plugin"
         },
         "is_top_level": true,
         "variables": {}

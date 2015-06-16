@@ -96,6 +96,10 @@ h1 {
     background-color:#4B946A;
     display:none;
 }
+.event.plugin {
+    background-color:#333333;
+}
+
 
 @keyframes fade {
     from { opacity: 1.0; }
