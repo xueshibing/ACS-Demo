@@ -72,11 +72,21 @@ public class NFCReader {
     }
 
 
-    public void authenticateWithKeyA(int slot, int block, String keyA,OnGetResultListener listener) {
+    public void authenticateWithKeyA(int slot, int block, String keyA, OnGetResultListener listener) {
         AuthParams authParams = new AuthParams(this, slot, block);
         authParams.setKeyA(keyA);
         authParams.setOnGetResultListener(listener);
         new AuthenticateWithKeyA().execute(authParams);
+    }
+
+    public void display(DisplayParams displayParams) {
+        displayParams.setReader(this);
+        new DisplayTask().execute(displayParams);
+    }
+
+    public void clearLCD(ClearLCDParams clearLCDParams) {
+        clearLCDParams.setReader(this);
+        new ClearLCDTask().execute(clearLCDParams);
     }
 
     public interface StatusChangeListener {

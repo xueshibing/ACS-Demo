@@ -3,6 +3,19 @@ var exec = require('cordova/exec');
 function ACR(){
 }
 
+ACR.clearLCD = function (success, failure) {
+  cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "clearLCD", []);
+}
+
+ACR.display = function (msg, opts, success, failure) {
+  var options = opts || {}
+  if(options.bold == undefined){options.bold = false}
+  if(options.font == undefined){options.font = 0}
+  if(options.x == undefined){options.x = 0}
+  if(options.y == undefined){options.y = 0}
+  cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "display", [msg, options.x, options.y, options.bold, options.font]);
+}
+
 ACR.addTagIdListener = function (success, failure) {
   cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "listen", []);
 }

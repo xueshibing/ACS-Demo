@@ -64,41 +64,50 @@ var app = {
 
         var readButton = document.getElementById("read_data");
         readButton.addEventListener('click', function() { 
-          if(keyA.value.length > 0){
-            ACR.authenticateWithKeyA(4,keyA.value, function(){
-                ACR.readData(BLOCK,read_success,read_failure);
-              }, function(){
-                alert('authenticate fail');
-                return;
-              }
-              )
-          }else{
+          //if(keyA.value.length > 0){
+            //ACR.authenticateWithKeyA(4,keyA.value, function(){
+                //ACR.readData(BLOCK,read_success,read_failure);
+              //}, function(){
+                //alert('authenticate fail');
+                //return;
+              //}
+              //)
+          //}else{
             ACR.readData(BLOCK,read_success,read_failure);
-          }
+          //}
+        });
+        var displayButton = document.getElementById("display");
+        var displayInput = document.getElementById("input_display");
+        var clearButton = document.getElementById("clear");
+        displayButton.addEventListener('click', function() { 
+          ACR.display(displayInput.value,{},function(r){},function(r){});
+        });
+        clearButton.addEventListener('click', function() { 
+          ACR.clearLCD(function(r){},function(r){});
         });
         var writeButton = document.getElementById("write_data");
         var writeInput = document.getElementById("write_data_input");
-        var keyA = document.getElementById("key_a");
-        var keyB = document.getElementById("key_b");
+        //var keyA = document.getElementById("key_a");
+        //var keyB = document.getElementById("key_b");
         writeButton.addEventListener('click', function() { 
-          if(keyA.value.length > 0 || keyB.value.length > 0){
-            if(keyA.value.length == 0){
-                alert('please input KeyA');
-                return;
-            }
-            if(keyB.value.length == 0){
-                alert('please input KeyB');
-                return;
-            }
-            //ACR.authenticateWithKeyB(keyB.value, function(){},function(){});
-            ACR.writeAuthenticate(BLOCK,keyA.value,keyB.value, function(){
-              ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
-            }, function(){
-                alert('write authenticate fail');
-            });
-          }else{
+          //if(keyA.value.length > 0 || keyB.value.length > 0){
+            //if(keyA.value.length == 0){
+                //alert('please input KeyA');
+                //return;
+            //}
+            //if(keyB.value.length == 0){
+                //alert('please input KeyB');
+                //return;
+            //}
+            ////ACR.authenticateWithKeyB(keyB.value, function(){},function(){});
+            //ACR.writeAuthenticate(BLOCK,keyA.value,keyB.value, function(){
+              //ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
+            //}, function(){
+                //alert('write authenticate fail');
+            //});
+          //}else{
             ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
-          }
+          //}
         });
         var disableButtons = function(){
           readButton.disabled = true;
