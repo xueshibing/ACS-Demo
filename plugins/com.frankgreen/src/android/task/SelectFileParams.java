@@ -1,16 +1,15 @@
 package com.frankgreen.task;
 
-import com.frankgreen.NFCReader;
-import com.frankgreen.apdu.OnGetResultListener;
-
 /**
  * Created by kevin on 6/5/15.
  */
-public class UIDParams  extends Params {
+public class SelectFileParams extends Params {
     private int slotNumber;
+    private String aid;
 
-    public UIDParams( int slotNumber) {
+    public SelectFileParams(int slotNumber, String aid) {
         this.slotNumber = slotNumber;
+        this.aid = aid;
     }
 
     public int getSlotNumber() {
@@ -19,5 +18,13 @@ public class UIDParams  extends Params {
 
     public void setSlotNumber(int slotNumber) {
         this.slotNumber = slotNumber;
+    }
+
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
     }
 }

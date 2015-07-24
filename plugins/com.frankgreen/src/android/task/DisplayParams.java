@@ -6,33 +6,40 @@ import com.frankgreen.apdu.OnGetResultListener;
 /**
  * Created by kevin on 6/10/15.
  */
-public class DisplayParams {
-    private int x=0;
-    private int y=0;
-    private boolean bold=false;
-    private int font=0;
+public class DisplayParams  extends Params{
+    private int x = 0;
+    private int y = 0;
+    private boolean bold = false;
+    private int font = 1;
     private String message;
-    private NFCReader reader;
 
-    public NFCReader getReader() {
-        return reader;
+
+    public byte getOption() {
+        byte o = 0;
+        if (this.isBold()) {
+            o |= (byte) 0x01;
+        }
+        if (this.getFont() == 2) {
+            o |= (byte) 0x10;
+        }
+        if (this.getFont() == 3) {
+            o |= (byte) 0x20;
+        }
+        return o;
     }
 
-    public void setReader(NFCReader reader) {
-        this.reader = reader;
+    public byte getXY(){
+        byte xy = 0;
+        if(this.getFont() == 1 || this.getFont() == 2){
+            xy |= (byte)((this.getX() % 2) << 6);
+        }else{
+            xy |= (byte)((this.getX() % 4) << 5);
+        }
+        xy |= (byte)(this.getY() & 0x0F);
+        return xy;
     }
 
-    private OnGetResultListener onGetResultListener;
-
-    public OnGetResultListener getOnGetResultListener() {
-        return onGetResultListener;
-    }
-
-    public void setOnGetResultListener(OnGetResultListener onGetResultListener) {
-        this.onGetResultListener = onGetResultListener;
-    }
-
-    public DisplayParams( String message) {
+    public DisplayParams(String message) {
         this.message = message;
     }
 
@@ -61,6 +68,8 @@ public class DisplayParams {
     }
 
     public int getFont() {
+        if (font < 1) return 1;
+        if (font > 3) return 1;
         return font;
     }
 

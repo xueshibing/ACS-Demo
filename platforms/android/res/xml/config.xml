@@ -8,7 +8,7 @@
         <param name="android-package" value="com.frankgreen.ACRNFCReaderPhoneGapPlugin" />
     </feature>
     <allow-intent href="market:*" />
-    <name>Hello World</name>
+    <name>Reader Demo</name>
     <description>
         Hello World sample application that responds to the deviceready event.
     </description>

@@ -47,6 +47,13 @@ var app = {
 
         var BLOCK = 4;
 
+        var read_uid_success =  function(result){
+              alert("UID: " + JSON.stringify(result))
+        }
+
+        var read_uid_failure =  function(result){
+              alert("error UID: " + JSON.stringify(result))
+        }
         var read_success =  function(result){
               alert("data: " + JSON.stringify(result))
         }
@@ -80,7 +87,9 @@ var app = {
         var displayInput = document.getElementById("input_display");
         var clearButton = document.getElementById("clear");
         displayButton.addEventListener('click', function() { 
-          ACR.display(displayInput.value,{},function(r){},function(r){});
+          ACR.display(displayInput.value,{bold: true , font:1,x:0},function(r){},function(r){});
+          ACR.display(displayInput.value,{bold: false, font:3,x:2, y:4},function(r){},function(r){});
+          ACR.display(displayInput.value,{bold: false, font:3,x:3, y:6},function(r){},function(r){});
         });
         clearButton.addEventListener('click', function() { 
           ACR.clearLCD(function(r){},function(r){});
@@ -118,7 +127,8 @@ var app = {
           writeButton.disabled = false;
         }
         var success = function(result) {
-            alert("UID: " + JSON.stringify(result));
+            alert("ATR: " + JSON.stringify(result));
+            ACR.readUID(read_uid_success, read_uid_failure);
             enableButtons();
         };
 
@@ -130,7 +140,8 @@ var app = {
             disableButtons();
         }
         console.log("Calling plugin");
-        ACR.addTagIdListener(success, failure);
+        ACR.start();
+        ACR.addTagListener(success, failure);
         ACR.onReady = function (reader) {
           pluginElement.innerHTML = "ready " + reader;
         }

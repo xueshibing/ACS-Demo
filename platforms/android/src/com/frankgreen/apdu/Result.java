@@ -28,18 +28,16 @@ public class Result {
     }
 
     public Result(String command, int byteCount, byte[] receiveBuffer) {
-        if (byteCount >= 2) {
-            this.size = byteCount - 2;
-        } else {
-            size = 0;
-        }
-        setReceiveBuffer(receiveBuffer);
+
+        setReceiveBuffer(byteCount,receiveBuffer);
         this.command = command;
     }
 
     public Result(String command, Exception exception) {
         this.exception = exception;
         this.command = command;
+        this.size = 0;
+        this.code = new byte[]{(byte)0,(byte)0};
     }
 
     public Result() {
@@ -67,6 +65,7 @@ public class Result {
 
     public void setData(byte[] data) {
         this.data = data;
+        this.size = data.length;
     }
 
     public byte[] getCode() {
@@ -85,14 +84,16 @@ public class Result {
         return this.code[0] == (byte) 0x90 && this.code[1] == (byte) 0x00;
     }
 
-    public void setReceiveBuffer(byte[] receiveBuffer) {
-        if (size > 0) {
+    public void setReceiveBuffer(int byteCount,byte[] receiveBuffer) {
+        if (byteCount >= 2) {
+            this.size = byteCount - 2;
             this.code = new byte[2];
             this.code[0] = receiveBuffer[size];
             this.code[1] = receiveBuffer[size + 1];
             this.data = Arrays.copyOf(receiveBuffer, size);
         } else {
-            this.code = new byte[2];
+            this.size = 0;
+            this.code = new byte[]{(byte)0,(byte)0};
             if (receiveBuffer != null && receiveBuffer.length > 2) {
                 this.code[0] = receiveBuffer[size];
                 this.code[1] = receiveBuffer[size + 1];
