@@ -12,12 +12,13 @@ ACR.start = function() {
             function () {
                 cordova.exec( 
                   function(r){
-                    ACR.metadata = ACR.convertMetadata(r);
-                    r.metadata = ACR.metadata;
+                    //ACR.metadata = ACR.convertMetadata(r);
+                    //r.metadata = ACR.metadata;
+                    ACR.metadata = r.metadata;
                     ACR.TagSuccessListener(r);
                   },
                   function(r){
-                    ACR.metadata = {};
+                    //ACR.metadata = {};
                     ACR.TagFailureListener(r);
                   },
                     "ACRNFCReaderPhoneGapPlugin", "listen", []); 
@@ -28,36 +29,42 @@ ACR.start = function() {
 
 //document.addEventListener('deviceready', ACR.handleFromIntentFilter, false);
 
-ACR.convertMetadata = function(r){
-  var h = {};
-  if(r.data =="3B80800101"){
-    h.type = "JavaCard";
-  }else if(r.historical){
-    var t = r.historical.slice(10,14)
-      if (t == "0001"){
-        h.type = "Mifare 1K"
-      }else if(t == "0002"){
-        h.type = "Mifare 4K"
-      }else if(t == "0003"){
-        h.type = "Mifare Ultralight"
-      }else if(t == "0026"){
-        h.type = "Mifare Mini"
-      }else if(t == "F004"){
-        h.type = "Topaz and Jewel"
-      }else if(t == "F011"){
-        h.type = "FeliCa 212K"
-      }else if(t == "F012"){
-        h.type = "FeliCa 424K"
-      }else if(t == "F028"){
-        h.type = "JCOP 30"
-      }
-  }
-  return h;
-}
+//ACR.convertMetadata = function(r){
+  //var h = {};
+  //if(r.data =="3B80800101"){
+    //h.type = "JavaCard";
+  //}else if(r.historical){
+    //var t = r.historical.slice(10,14)
+      //if (t == "0001"){
+        //h.type = "Mifare 1K"
+      //}else if(t == "0002"){
+        //h.type = "Mifare 4K"
+      //}else if(t == "0003"){
+        //h.type = "Mifare Ultralight"
+      //}else if(t == "0026"){
+        //h.type = "Mifare Mini"
+      //}else if(t == "F004"){
+        //h.type = "Topaz and Jewel"
+      //}else if(t == "F011"){
+        //h.type = "FeliCa 212K"
+      //}else if(t == "F012"){
+        //h.type = "FeliCa 424K"
+      //}else if(t == "F028"){
+        //h.type = "JCOP 30"
+      //}
+  //}
+  //return h;
+//}
 
 ACR.AID = "F222222228";
 ACR.setAID = function (aid) {
   ACR.AID = aid;
+}
+ACR.getVersion = function(success,failure){
+  cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "getVersion", []);
+}
+ACR.initNTAG213 = function(password,success,failure){
+  cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "initNTAG213", [password]);
 }
 
 ACR.metadata = {};
@@ -77,6 +84,11 @@ ACR.display = function (msg, opts, success, failure) {
   if(options.x == undefined){options.x = 0}
   if(options.y == undefined){options.y = 0}
   cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "display", [msg, options.x, options.y, options.bold, options.font]);
+}
+
+ACR.removeTagListener = function (success, failure) {
+  ACR.TagSuccessListener = function(){};
+  ACR.TagFailureListener = function(){};
 }
 
 ACR.addTagListener = function (success, failure) {
@@ -104,18 +116,18 @@ ACR.writeAuthenticate = function(block,keyA, keyB,success,failure){
 ACR.readUID = function(success,failure){
   cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "readUID",[]);
 }
-ACR.readData = function(block,success,failure){
+ACR.readData = function(block,password,success,failure){
   if(ACR.metadata.type == "JavaCard"){
     ACR.selectFile(ACR.AID,success,failure);
   }else{
-    cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "readData", [block]);
+    cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "readData", [block,password]);
   }
 }
-ACR.writeData = function(block, data,success,failure){
+ACR.writeData = function(block, data, password, success, failure){
   if(ACR.metadata.type == "JavaCard"){
     failure({success:false, exception: "JavaCard"});
   }else{
-    cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "writeData", [block,data]);
+    cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "writeData", [block,data,password]);
   }
 }
 ACR.onCardAbsent = function () {

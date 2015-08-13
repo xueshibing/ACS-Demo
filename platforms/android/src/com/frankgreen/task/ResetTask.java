@@ -6,36 +6,48 @@ import com.acs.smartcard.Reader;
 import com.acs.smartcard.ReaderException;
 import com.frankgreen.NFCReader;
 import com.frankgreen.apdu.Result;
+import com.frankgreen.apdu.command.GetVersion;
+import com.frankgreen.apdu.command.ReadBinaryBlock;
+import com.frankgreen.apdu.command.Reset;
+import com.frankgreen.apdu.command.UID;
 
 
 /**
  * Created by kevin on 6/2/15.
  */
-public class ResetTask extends AsyncTask<ResetParams, Void, Boolean> {
+public class ResetTask extends AsyncTask<BaseParams, Void, Boolean> {
 
     final private String TAG = "ResetTask";
 
 
     @Override
-    protected Boolean doInBackground(ResetParams... resetParamses) {
-        ResetParams resetParams = resetParamses[0];
-        int slotNumber = resetParams.getSlotNumber();
-        NFCReader reader = resetParams.getReader();
+    protected Boolean doInBackground(BaseParams... baseParamses) {
+        BaseParams baseParams = baseParamses[0];
+        if (baseParams == null) {
+            return false;
+        }
         Result result = Result.buildSuccessInstance("Reset");
+        ReadParams readParams = new ReadParams(0,0);
+        readParams.setOnGetResultListener(baseParams.getOnGetResultListener());
+        readParams.setReader(baseParams.getReader());
+        ReadBinaryBlock read = new ReadBinaryBlock(readParams);
+        Reset reset = new Reset(baseParams);
+        UID uid = new UID(baseParams);
+        GetVersion getVersion = new GetVersion(baseParams);
+        reset.setSendPlugin(false);
+        uid.setSendPlugin(false);
+        read.setSendPlugin(false);
+        getVersion.setSendPlugin(false);
 
-        try {
-            byte[] atr = reader.getReader().power(slotNumber, Reader.CARD_WARM_RESET);
-            if (atr != null) {
-                result.setData(atr);
-                reader.getReader().setProtocol(slotNumber, Reader.PROTOCOL_T0 | Reader.PROTOCOL_T1);
-            }
-        } catch (ReaderException e) {
-            result = new Result("Reset",e);
+        reset.run();
+        uid.run();
+        read.run();
+        getVersion.run();
+        result.setMeta(baseParams.getReader().getChipMeta());
+        if (baseParams.getOnGetResultListener() != null) {
+            baseParams.getOnGetResultListener().onResult(result);
         }
-        if (resetParams.getOnGetResultListener() != null) {
-            resetParams.getOnGetResultListener().onResult(result);
-        }
-        return result.isSuccess();
+        return true;
     }
 
 }

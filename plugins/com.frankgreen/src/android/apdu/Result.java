@@ -1,5 +1,6 @@
 package com.frankgreen.apdu;
 
+import com.frankgreen.ChipMeta;
 import com.frankgreen.Util;
 
 import java.util.Arrays;
@@ -13,8 +14,14 @@ public class Result {
     private String command;
     private byte[] data;
     private byte[] code;
+    private ChipMeta meta;
     private Exception exception;
+    private Checker checker;
+    private boolean sendPlugin = true;
 
+    public interface Checker{
+        boolean check(Result result);
+    }
     public String getCommand() {
         return command;
     }
@@ -81,7 +88,35 @@ public class Result {
     }
 
     public boolean isSuccess() {
-        return this.code[0] == (byte) 0x90 && this.code[1] == (byte) 0x00;
+        boolean flag = this.code[0] == (byte) 0x90 && this.code[1] == (byte) 0x00;
+        if(flag && this.checker != null){
+            return this.checker.check(this);
+        }
+        return flag;
+    }
+
+    public ChipMeta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(ChipMeta meta) {
+        this.meta = meta;
+    }
+
+    public boolean isSendPlugin() {
+        return sendPlugin;
+    }
+
+    public void setSendPlugin(boolean sendPlugin) {
+        this.sendPlugin = sendPlugin;
+    }
+
+    public Checker getChecker() {
+        return checker;
+    }
+
+    public void setChecker(Checker checker) {
+        this.checker = checker;
     }
 
     public void setReceiveBuffer(int byteCount,byte[] receiveBuffer) {

@@ -69,6 +69,10 @@ var app = {
               alert("write error data: " + JSON.stringify(result))
         }
 
+        var _cb =  function(result){
+              alert("data: " + JSON.stringify(result))
+        }
+        var dataBlock = document.getElementById("data_block");
         var readButton = document.getElementById("read_data");
         readButton.addEventListener('click', function() { 
           //if(keyA.value.length > 0){
@@ -80,7 +84,7 @@ var app = {
               //}
               //)
           //}else{
-            ACR.readData(BLOCK,read_success,read_failure);
+            ACR.readData(parseInt(dataBlock.value,10),passwordInput.value,read_success,read_failure);
           //}
         });
         var displayButton = document.getElementById("display");
@@ -94,8 +98,17 @@ var app = {
         clearButton.addEventListener('click', function() { 
           ACR.clearLCD(function(r){},function(r){});
         });
+        var initNtagButton = document.getElementById("init_ntag");
         var writeButton = document.getElementById("write_data");
         var writeInput = document.getElementById("write_data_input");
+        var passwordInput = document.getElementById("password_input");
+        var getVersion = document.getElementById("get_version");
+        getVersion.addEventListener('click', function(){
+          ACR.getVersion(_cb,_cb);
+        });
+        initNtagButton.addEventListener('click', function(){
+          ACR.initNTAG213(passwordInput.value,_cb,_cb);
+        });
         //var keyA = document.getElementById("key_a");
         //var keyB = document.getElementById("key_b");
         writeButton.addEventListener('click', function() { 
@@ -115,20 +128,24 @@ var app = {
                 //alert('write authenticate fail');
             //});
           //}else{
-            ACR.writeData(BLOCK,writeInput.value,write_success,write_failure);
+            ACR.writeData(parseInt(dataBlock.value, 10),writeInput.value,passwordInput.value,write_success,write_failure);
           //}
         });
         var disableButtons = function(){
           readButton.disabled = true;
           writeButton.disabled = true;
+          getVersion.disabled = true;
+          initNtagButton.disabled = true;
         }
         var enableButtons = function(){
           readButton.disabled = false;
           writeButton.disabled = false;
+          getVersion.disabled = false;
+          initNtagButton.disabled = false;
         }
         var success = function(result) {
             alert("ATR: " + JSON.stringify(result));
-            ACR.readUID(read_uid_success, read_uid_failure);
+            ACR.readData(4,passwordInput.value,read_uid_success, read_uid_failure);
             enableButtons();
         };
 
@@ -146,10 +163,10 @@ var app = {
           pluginElement.innerHTML = "ready " + reader;
         }
         ACR.onAttach = function (device) {
-          pluginElement.innerHTML = "attched " + reader;
+          pluginElement.innerHTML = "attched " + device;
         }
         ACR.onDetach = function (device) {
-          pluginElement.innerHTML = "detached " + reader;
+          pluginElement.innerHTML = "detached " + device;
         }
         console.log("Called plugin");
         console.log('Received Event: ' + id);

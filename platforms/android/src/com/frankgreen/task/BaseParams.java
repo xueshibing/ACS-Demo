@@ -1,15 +1,12 @@
 package com.frankgreen.task;
 
-import com.frankgreen.NFCReader;
-import com.frankgreen.apdu.OnGetResultListener;
-
 /**
  * Created by kevin on 6/5/15.
  */
-public class UIDParams  extends Params {
-    private int slotNumber;
+public class BaseParams extends Params {
+    private int slotNumber = 0;
 
-    public UIDParams( int slotNumber) {
+    public BaseParams(int slotNumber) {
         this.slotNumber = slotNumber;
     }
 

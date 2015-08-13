@@ -146,6 +146,15 @@ public class Util {
         return new String(data);
     }
 
+    public static void sleep(int n){
+        try {
+            Log.d("Util.sleep",String.valueOf(n));
+            Thread.sleep(n); //do remove this line.
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static JSONObject resultToJSON(Result result) {
         JSONObject json = new JSONObject();
         try {
@@ -154,12 +163,20 @@ public class Util {
 //            json.put("command", result.getCommand());
             if (result.isSuccess()) {
                 if (result.getCommand() != null) {
-                    if (result.getCommand() == "ReadBinaryBlock" || result.getCommand() == "SelectFile") {
+                    if (result.getCommand() == "ReadBinaryBlock" || result.getCommand() == "UpdateBinaryBlock"  || result.getCommand() == "SelectFile") {
                         json.put("data", dataToString(result.getData()));
                     } else if (result.getCommand() == "Reset") {
-                        json.put("data", toHexString(result.getData()));
-                        ATR atr = new ATR(result.getData());
-                        json.put("historical", toHexString(atr.getHistoricalBytes()));
+                        json.put("data", result.getMeta().getUid() );
+//                        ATR atr = new ATR(result.getData());
+                        json.put("metadata", result.getMeta().toJSON());
+                    } else if (result.getCommand() == "GetVersion") {
+                        Chip chip = Chip.find(result.getData());
+                        if (chip != null) {
+                            json.put("data", chip.getName());
+                        }else{
+                            json.put("data", "UNKNOWN");
+                        }
+                        json.put("response", toHexString(result.getData()));
                     } else {
                         json.put("data", toHexString(result.getData()));
                     }
