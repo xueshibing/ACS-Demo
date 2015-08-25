@@ -98,16 +98,17 @@ var app = {
         clearButton.addEventListener('click', function() { 
           ACR.clearLCD(function(r){},function(r){});
         });
-        var initNtagButton = document.getElementById("init_ntag");
         var writeButton = document.getElementById("write_data");
         var writeInput = document.getElementById("write_data_input");
         var passwordInput = document.getElementById("password_input");
+        var oldPasswordInput = document.getElementById("old_password_input");
+        var initNtagButton = document.getElementById("init_ntag");
         var getVersion = document.getElementById("get_version");
         getVersion.addEventListener('click', function(){
           ACR.getVersion(_cb,_cb);
         });
         initNtagButton.addEventListener('click', function(){
-          ACR.initNTAG213(passwordInput.value,_cb,_cb);
+          ACR.initNTAG213(oldPasswordInput.value, passwordInput.value,_cb,_cb);
         });
         //var keyA = document.getElementById("key_a");
         //var keyB = document.getElementById("key_b");

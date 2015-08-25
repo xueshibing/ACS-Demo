@@ -16,6 +16,8 @@ public class ChipMeta {
     private String uid;
     private String type;
     private String name;
+    private byte[] atr;
+    private boolean mifare;
 
     public String getUid() {
         return uid;
@@ -51,12 +53,13 @@ public class ChipMeta {
     }
 
     public void parseATR(byte[] atr) {
+        this.atr = atr;
         ATRHistorical atrHistorical = new ATRHistorical(atr);
         this.type = atrHistorical.getType();
     }
 
     public void parseBlock0(byte[] data) {
-        if (data != null && data.length == 16) {
+        if (data != null && data.length == 16) { // check the Capability Container (CC bytes)
             if (bitCompare(data[12], (byte) 0xe1) && bitCompare(data[13], (byte) 0x10)) {
                 this.type = ATRHistorical.MIFARE_ULTRALIGHT_C;
             }
@@ -80,6 +83,7 @@ public class ChipMeta {
             }
             json.put("name", this.name);
             json.put("uid", this.uid);
+            json.put("atr", Util.toHexString(this.atr));
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -87,4 +91,7 @@ public class ChipMeta {
         return null;
     }
 
+    public boolean isMifare() {
+        return this.type != null && (this.type.equals(ATRHistorical.MIFARE_ULTRALIGHT) || this.type.equals(ATRHistorical.MIFARE_ULTRALIGHT_C));
+    }
 }
