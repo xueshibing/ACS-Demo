@@ -98,12 +98,19 @@ var app = {
         clearButton.addEventListener('click', function() { 
           ACR.clearLCD(function(r){},function(r){});
         });
+        var isReadyButton = document.getElementById("is_ready");
         var writeButton = document.getElementById("write_data");
         var writeInput = document.getElementById("write_data_input");
         var passwordInput = document.getElementById("password_input");
         var oldPasswordInput = document.getElementById("old_password_input");
         var initNtagButton = document.getElementById("init_ntag");
         var getVersion = document.getElementById("get_version");
+        isReadyButton.addEventListener('click', function(){
+          ACR.isReady(
+            function(){alert('is Ready')},
+            function(){alert('is not Ready')}
+            );
+        });
         getVersion.addEventListener('click', function(){
           ACR.getVersion(_cb,_cb);
         });

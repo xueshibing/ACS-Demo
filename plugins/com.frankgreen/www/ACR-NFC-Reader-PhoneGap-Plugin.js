@@ -129,6 +129,14 @@ ACR.readData = function(block, password, success, failure) {
   }
 };
 
+ACR.readMobileData = function(success, failure) {
+  ACR.selectFile(ACR.AID, success, failure);
+};
+
+ACR.isReady = function(success, failure) {
+  cordova.exec(success, failure, "ACRNFCReaderPhoneGapPlugin", "isReady", []);
+};
+
 ACR.writeData = function(block, data, password, success, failure) {
   if (ACR.metadata.type === "javacard"){
     failure({success:false, exception: "javacard"});
@@ -147,10 +155,6 @@ ACR.onReady = function(reader) {};
 ACR.onAttach = function(device) {};
 ACR.onDetach = function(device) {};
 
-ACR.runReady = function(reader) {
-  ACR.initReader();
-  ACR.onReady(reader);
-};
 ACR.runCardAbsent = function() {
   ACR.metadata = {};
   ACR.onCardAbsent();

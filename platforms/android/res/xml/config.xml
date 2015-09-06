@@ -4,6 +4,9 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
+    <feature name="ACRNFCReaderPhoneGapPlugin">
+        <param name="android-package" value="com.frankgreen.ACRNFCReaderPhoneGapPlugin" />
+    </feature>
     <allow-intent href="market:*" />
     <name>Reader Demo</name>
     <description>
@@ -78,7 +81,4 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <feature name="ACRNFCReaderPhoneGapPlugin">
-        <param name="android-package" value="com.frankgreen.ACRNFCReaderPhoneGapPlugin" />
-    </feature>
 </widget>
